@@ -1,6 +1,5 @@
-import { IUserRepository } from '../interfaces/IUserRepository';
-
 import { User } from '../entities/User';
+import { IUserRepository } from '../interfaces/IUserRepository';
 
 export class UserUseCase {
     private userRepository: IUserRepository;
