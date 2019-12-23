@@ -14,7 +14,7 @@ export class UserController {
         this.userAction = new UserUseCase(this.userRepository);
     }
 
-    getUserByUserName(req: Request, res: Response, next: NextFunction) {
+    getUserByUserName = (req: Request, res: Response, next: NextFunction) => {
         this.userAction.getByUsername(req.params.username)
             .then((user: User) => {
                 res.json(user);
@@ -24,7 +24,7 @@ export class UserController {
             });
     }
 
-    getAll(req: Request, res: Response, next: NextFunction) {
+    getAll = (req: Request, res: Response, next: NextFunction) => {
         this.userAction.getAll()
             .then((users: Array<User>) => {
                 res.json(users);
