@@ -1,9 +1,7 @@
-import { IUserRepository } from '../../../../interfaces/IUserRepository';
-
-import { UserUseCase } from '../../../../use-cases/UserUseCase';
+import { NextFunction, Request, Response } from 'express';
 import { User } from '../../../../entities/User';
-
-import { NextFunction, Response, Request } from 'express'
+import { IUserRepository } from '../../../../interfaces/IUserRepository';
+import { UserUseCase } from '../../../../use-cases/UserUseCase';
 
 export class UserController {
     private userRepository: IUserRepository;

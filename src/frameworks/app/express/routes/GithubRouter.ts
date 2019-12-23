@@ -1,13 +1,7 @@
-import { IDatabaseService } from '../../../../interfaces/services/IDatabaseService';
-
-import { UserController } from '../controllers/UserController';
-// import { TYPES } from '../../../../configs/types';
-
-// import 'reflect-metadata';
-// import { injectable, inject } from 'inversify'
 import express, { Router } from 'express';
+import { IDatabaseService } from '../../../../interfaces/services/IDatabaseService';
+import { UserController } from '../controllers/UserController';
 
-// @injectable()
 export class GithubRouter {
     private router: Router;
     private userController: UserController;

@@ -1,6 +1,5 @@
-import { IUserRepository } from '../../../interfaces/IUserRepository';
-
 import { User } from '../../../entities/User';
+import { IUserRepository } from '../../../interfaces/IUserRepository';
 
 export class GithubUserRepository implements IUserRepository {
     private users: Array<User>;

@@ -1,13 +1,11 @@
-import { IDatabaseService } from '../../../interfaces/services/IDatabaseService';
-import { IApiAdapterService } from '../../../interfaces/services/IApiAdapterService';
-import { IUserRepository } from '../../../interfaces/IUserRepository';
-
-import { User } from '../../../entities/User';
-import { GithubUserRepository } from './GithubUserRepository';
-import { TYPES } from '../../../configs/types';
-
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
-import { injectable, inject } from 'inversify';
+import { _ } from '../../../di/inject';
+import { User } from '../../../entities/User';
+import { IUserRepository } from '../../../interfaces/IUserRepository';
+import { IApiAdapterService } from '../../../interfaces/services/IApiAdapterService';
+import { IDatabaseService } from '../../../interfaces/services/IDatabaseService';
+import { GithubUserRepository } from './GithubUserRepository';
 
 @injectable()
 export class DatabaseService implements IDatabaseService {
@@ -15,13 +13,12 @@ export class DatabaseService implements IDatabaseService {
     private apiAdapter: IApiAdapterService;
 
 
-    constructor(@inject(TYPES.ApiAdapterService) apiAdapter: IApiAdapterService) {
+    constructor(@inject(_.ApiAdapterService) apiAdapter: IApiAdapterService) {
         this.userRepository = new GithubUserRepository();
         this.apiAdapter = apiAdapter;
     }
 
     initialize(): Promise<void> {
-
         return new Promise((resolve, reject) => {
             try {
                 this.seed()
