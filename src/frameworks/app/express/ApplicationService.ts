@@ -1,7 +1,7 @@
 import { IApplicationService } from '../../../interfaces/services/IApplicationService';
 import { IDependencyInjector } from '../../../interfaces/IDependencyInjector';
 
-import { routes } from './routes/github-service';
+import { GithubRouter } from './routes/GithubRouter';
 
 import express from 'express';
 import http from 'http';
@@ -20,7 +20,7 @@ export class ApplicationService implements IApplicationService {
     initialize(dependencies: IDependencyInjector): Promise<void> {
         return new Promise((resolve, reject) => {
             try {
-                this.app.use(this.version, routes(dependencies));
+                this.app.use(this.version, new GithubRouter(dependencies).initialize());
 
                 const server: any = http.createServer(this.app);
                 server.listen(this.port);
