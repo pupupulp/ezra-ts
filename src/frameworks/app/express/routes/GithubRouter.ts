@@ -1,19 +1,20 @@
-import { IDependencyInjector } from '../../../../interfaces/IDependencyInjector';
 import { IDatabaseService } from '../../../../interfaces/services/IDatabaseService';
 
 import { UserController } from '../controllers/UserController';
+// import { TYPES } from '../../../../configs/types';
 
+// import 'reflect-metadata';
+// import { injectable, inject } from 'inversify'
 import express, { Router } from 'express';
 
+// @injectable()
 export class GithubRouter {
     private router: Router;
-    private databaseService: IDatabaseService;
     private userController: UserController;
 
-    constructor(dependencies: IDependencyInjector) {
+    constructor(databaseService: IDatabaseService) {
         this.router = express.Router();
-        this.databaseService = dependencies.DatabaseService;
-        this.userController = new UserController(this.databaseService.getUserRepository());
+        this.userController = new UserController(databaseService.getUserRepository());
 
         return this;
     }

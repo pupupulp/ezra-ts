@@ -1,7 +1,6 @@
-import { IDependencyInjector } from '../IDependencyInjector';
 import { IUserRepository } from '../IUserRepository';
 
 export interface IDatabaseService {
-    initialize(dependencies: IDependencyInjector): Promise<void>;
+    initialize(): Promise<void>;
     getUserRepository(): IUserRepository;
 }

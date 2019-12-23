@@ -1,26 +1,32 @@
 import { IApplicationService } from '../../../interfaces/services/IApplicationService';
-import { IDependencyInjector } from '../../../interfaces/IDependencyInjector';
 
 import { GithubRouter } from './routes/GithubRouter';
+import { TYPES } from '../../../configs/types';
 
 import express from 'express';
 import http from 'http';
+import 'reflect-metadata';
+import { injectable, inject } from 'inversify';
+import { IDatabaseService } from '../../../interfaces/services/IDatabaseService';
 
+@injectable()
 export class ApplicationService implements IApplicationService {
     private app: any;
     private version: string;
     private port: number;
+    private databaseService: IDatabaseService;
 
-    constructor() {
+    constructor(@inject(TYPES.DatabaseService) databaseService: IDatabaseService) {
         this.app = express();
         this.version = '/v1';
         this.port = 9003;
+        this.databaseService = databaseService;
     }
 
-    initialize(dependencies: IDependencyInjector): Promise<void> {
+    initialize(): Promise<void> {
         return new Promise((resolve, reject) => {
             try {
-                this.app.use(this.version, new GithubRouter(dependencies).initialize());
+                this.app.use(this.version, new GithubRouter(this.databaseService).initialize());
 
                 const server: any = http.createServer(this.app);
                 server.listen(this.port);

@@ -1,23 +1,30 @@
 import { IDatabaseService } from '../../../interfaces/services/IDatabaseService';
-import { IDependencyInjector } from '../../../interfaces/IDependencyInjector';
 import { IApiAdapterService } from '../../../interfaces/services/IApiAdapterService';
 import { IUserRepository } from '../../../interfaces/IUserRepository';
 
 import { User } from '../../../entities/User';
 import { GithubUserRepository } from './GithubUserRepository';
+import { TYPES } from '../../../configs/types';
 
+import 'reflect-metadata';
+import { injectable, inject } from 'inversify';
+
+@injectable()
 export class DatabaseService implements IDatabaseService {
     private userRepository: IUserRepository;
+    private apiAdapter: IApiAdapterService;
 
-    constructor() {
+
+    constructor(@inject(TYPES.ApiAdapterService) apiAdapter: IApiAdapterService) {
         this.userRepository = new GithubUserRepository();
+        this.apiAdapter = apiAdapter;
     }
 
-    initialize(dependencies: IDependencyInjector): Promise<void> {
+    initialize(): Promise<void> {
 
         return new Promise((resolve, reject) => {
             try {
-                this.seed(dependencies.ApiAdapterService)
+                this.seed()
                 resolve();
             } catch(err) {
                 reject(err);
@@ -25,8 +32,8 @@ export class DatabaseService implements IDatabaseService {
         });
     }
 
-    seed(apiAdapter: IApiAdapterService) {
-        apiAdapter.initialize('https://api.github.com')
+    seed() {
+        this.apiAdapter.initialize('https://api.github.com')
             .then(async adapter => {
                 await adapter.get('/users')
                     .then((resp: any) => {
